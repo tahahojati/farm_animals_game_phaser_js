@@ -15,6 +15,11 @@ var GameState = {
         this.scale.pageAlignHorizontally = true; 
         this.scale.pageAlignVertically = true; 
         
+        this.background = this.game.add.sprite(0, 0, 'background');
+        this.pig = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'pig');
+        this.pig.anchor.setTo(0.5); 
+
+        
         this.rightArrow = this.game.add.sprite(500, this.game.world.centerY, 'arrow');
         this.rightArrow.anchor.setTo(0.5); 
         this.rightArrow.customParams = {direction: 1};
@@ -33,15 +38,10 @@ var GameState = {
         this.leftArrow.pixelPerfectClick = true; 
         this.leftArrow.event.onInputDown.add(this.SwitchAnimal, this); 
         
+        this.pig.inputEnabled = true; 
+        this.pig.pixelPerfectClick = true; 
+        this.pig.event.onInputDown.add(this.animateAnimal, this);
         
-        this.background = this.game.add.sprite(0, 0, 'background');
-        this.chicken = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'chicken');
-        this.chicken.anchor.setTo(0.5, 0.5); 
-        this.chicken.scale.setTo(2); 
-        this.sheep = this.game.add.sprite(100, 250, 'sheep');
-        this.sheep.scale.setTo(0.5);
-        this.sheep.anchor.setTo(0.5); 
-        this.sheep.angle = -45; 
     },
     update: function(){
         this.sheep.angle += 0.5;
@@ -49,7 +49,10 @@ var GameState = {
     
     switchAnimal: function(sprite, event){
         console.log('move animal'); 
-    }
+    },
+    animateAnimal: function(sprite, event){
+        console.log('animate animal');
+    },
 };
 
 
