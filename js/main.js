@@ -2,11 +2,10 @@ var game = new Phaser.Game(640, 360, Phaser.AUTO);
 var GameState = {
     preload: function(){
         this.load.image('background', 'assets/images/background.png');
-        this.load.image('chicken', 'assets/images/chicken.png');
-        this.load.image('horse', 'assets/images/horse.png');
-        this.load.image('pig', 'assets/images/pig.png');
-        this.load.image('sheep', 'assets/images/sheep.png');
-        this.load.image('rightArrow', 'assets/images/right_arrow.png');
+        this.load.spritesheet('chicken', 'assets/images/chicken_spritesheet.png', 131, 200, 3);
+        this.load.spritesheet('horse', 'assets/images/horse_spritesheet.png', 212, 200, 3); 
+        this.load.spritesheet('pig', 'assets/images/pig_spritesheet.png', 297, 200, 3); 
+        this.load.spritesheet('sheep', 'assets/images/sheep_spritesheet.png', 244, 200, 3); 
         this.load.image('arrow', 'assets/images/arrow.png');
         
     },
@@ -27,9 +26,11 @@ var GameState = {
         var self = this;         
         animalData.forEach(function(element){
             var animal; 
-            animal = self.animals.create(-1000, self.game.world.centerY, element.key);
+            animal = self.animals.create(-1000, self.game.world.centerY, element.key, 0);
             animal.anchor.setTo(0.5); 
             animal.customParams = {text: element.text};
+            animal.animations.add('animate', [0,1,2,1,0,1], 3, false);
+            
             animal.inputEnabled = true; 
             animal.pixelPerfectClick = true; 
             animal.events.onInputDown.add(self.animateAnimal, self); 
@@ -67,6 +68,10 @@ var GameState = {
     
     switchAnimal: function(sprite, event){
         //console.log('move animal'); 
+        if(this.isMoving){
+            return false; 
+        }
+        this.isMoving = true; 
         var newAnimal;
         var endX; 
         if(sprite.customParams.direction > 0){
@@ -80,6 +85,9 @@ var GameState = {
         }
         var newAnimalMovement = this.game.add.tween(newAnimal); 
         newAnimalMovement.to(x: this.game.world.centerX, 1000); 
+        newAnimalMovement.onComplete.add(function(){
+           this.isMoving = false;  
+        }, this);
         newAnimalMovement.start(); 
         
         this.game.add.tween(this.currentAnimal)
@@ -89,7 +97,7 @@ var GameState = {
         this.currentAnimal = newAnimal; 
     },
     animateAnimal: function(sprite, event){
-        console.log('animate animal');
+        sprite.play('animate');
     },
 };
 
