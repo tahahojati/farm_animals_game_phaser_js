@@ -8,6 +8,12 @@ var GameState = {
         this.load.spritesheet('sheep', 'assets/images/sheep_spritesheet.png', 244, 200, 3); 
         this.load.image('arrow', 'assets/images/arrow.png');
         
+        //Audio 
+        this.load.audio('chickenSound', ['assets/audio/chicken.ogg', 'assets/audio/chicken.mp3']); 
+        this.load.audio('horseSound', ['assets/audio/horse.ogg', 'assets/audio/horse.mp3']);
+        this.load.audio('pigSound', ['assets/audio/pig.ogg', 'assets/audio/pig.mp3']);
+        this.load.audio('sheepSound', ['assets/audio/sheep.ogg', 'assets/audio/sheep.mp3']);
+        
     },
     create: function(){
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; 
@@ -16,10 +22,10 @@ var GameState = {
         
         this.background = this.game.add.sprite(0, 0, 'background');
         this.animalData= [
-            {key: "chicken", text: "CHICKEN"},
-            {key: "horse" , text:"HORSE"},
-            {key: "pig", text:"PIG"},
-            {key:"sheep", text:"SHEEP"},
+            {key: "chicken", text: "CHICKEN", audio: "chickenSound"},
+            {key: "horse" , text:"HORSE", audio: "horseSound"},
+            {key: "pig", text:"PIG", audio: "pigSound"},
+            {key:"sheep", text:"SHEEP", audio: "sheepSound"},
         ];
         this.animals = this.game.add.group();
         
@@ -28,7 +34,7 @@ var GameState = {
             var animal; 
             animal = self.animals.create(-1000, self.game.world.centerY, element.key, 0);
             animal.anchor.setTo(0.5); 
-            animal.customParams = {text: element.text};
+            animal.customParams = {text: element.text, audio: self.game.add.audio(element.audio)};
             animal.animations.add('animate', [0,1,2,1,0,1], 3, false);
             
             animal.inputEnabled = true; 
@@ -98,6 +104,7 @@ var GameState = {
     },
     animateAnimal: function(sprite, event){
         sprite.play('animate');
+        sprite.customParams.audio.play(); 
     },
 };
 
