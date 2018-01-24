@@ -24,10 +24,9 @@ var GameState = {
         ];
         this.animals = this.game.add.group();
         
-        var self = this; 
-        var animal; 
-        
+        var self = this;         
         animalData.forEach(function(element){
+            var animal; 
             animal = self.animals.create(-1000, self.game.world.centerY, element.key);
             animal.anchor.setTo(0.5); 
             animal.customParams = {text: element.text};
@@ -35,6 +34,9 @@ var GameState = {
             animal.pixelPerfectClick = true; 
             animal.events.onInputDown.add(self.animateAnimal, self); 
         });
+        this.currentAnimal = this.animals.next(); 
+        this.currentAnimal.position.set(this.game.world.centerX, this.game.world.centerY); 
+        
         
         this.rightArrow = this.game.add.sprite(500, this.game.world.centerY, 'arrow');
         this.rightArrow.anchor.setTo(0.5); 
@@ -64,7 +66,19 @@ var GameState = {
     },
     
     switchAnimal: function(sprite, event){
-        console.log('move animal'); 
+        //console.log('move animal'); 
+        var newAnimal;
+        var endX; 
+        if(sprite.customParams.direction > 0){
+            newAnimal = this.animals.next(); 
+            endX = 640 - this.currentAnimal.width/2; 
+        } else {
+            newAnimal = this.animals.previous(); 
+            endX = - this.currentAnimal.width/2; 
+        }
+        this.currentAnimal.x = endX: 
+        newAnimal.x = this.game.world.centerX; 
+        this.currentAnimal = newAnimal; 
     },
     animateAnimal: function(sprite, event){
         console.log('animate animal');
