@@ -24,7 +24,7 @@ var GameState = {
         this.animals = this.game.add.group();
         
         var self = this;         
-        animalData.forEach(function(element){
+        this.animalData.forEach(function(element){
             var animal; 
             animal = self.animals.create(-1000, self.game.world.centerY, element.key, 0);
             animal.anchor.setTo(0.5); 
@@ -84,14 +84,14 @@ var GameState = {
             endX = - this.currentAnimal.width/2; 
         }
         var newAnimalMovement = this.game.add.tween(newAnimal); 
-        newAnimalMovement.to(x: this.game.world.centerX, 1000); 
+        newAnimalMovement.to({x: this.game.world.centerX}, 1000); 
         newAnimalMovement.onComplete.add(function(){
            this.isMoving = false;  
         }, this);
         newAnimalMovement.start(); 
         
         this.game.add.tween(this.currentAnimal)
-            .to(x:endX)
+            .to({x:endX})
             .start();
         
         this.currentAnimal = newAnimal; 
