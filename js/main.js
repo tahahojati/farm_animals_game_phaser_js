@@ -46,13 +46,13 @@ var GameState = {
         this.showText(this.currentAnimal);
         
         
-        this.rightArrow = this.game.add.sprite(500, this.game.world.centerY, 'arrow');
+        this.rightArrow = this.game.add.sprite(580, this.game.world.centerY, 'arrow');
         this.rightArrow.anchor.setTo(0.5); 
         this.rightArrow.customParams = {direction: 1};
-        
         this.rightArrow.inputEnabled = true; 
         this.rightArrow.pixelPerfectClick = true; 
-        this.rightArrow.event.onInputDown.add(this.switchAnimal, this); 
+        this.rightArrow.events.onInputDown.add(this.switchAnimal, this); 
+
         
         this.leftArrow = this.game.add.sprite(60, this.game.world.centerY, 'arrow');
         this.leftArrow.anchor.setTo(0.5); 
@@ -62,18 +62,14 @@ var GameState = {
         //leftArrow allow user input
         this.leftArrow.inputEnabled = true; 
         this.leftArrow.pixelPerfectClick = true; 
-        this.leftArrow.event.onInputDown.add(this.SwitchAnimal, this); 
-        
-        this.pig.inputEnabled = true; 
-        this.pig.pixelPerfectClick = true; 
-        this.pig.event.onInputDown.add(this.animateAnimal, this);
+        this.leftArrow.events.onInputDown.add(this.switchAnimal, this); 
         
     },
     update: function(){
-        this.sheep.angle += 0.5;
     },
     
     switchAnimal: function(sprite, event){
+        console.log(sprite, event);
         //console.log('move animal'); 
         if(this.isMoving){
             return false; 
@@ -85,7 +81,7 @@ var GameState = {
         if(sprite.customParams.direction > 0){
             newAnimal = this.animals.next(); 
             newAnimal.x = -newAnimal.width/2; 
-            endX = 640 - this.currentAnimal.width/2; 
+            endX = 640 + this.currentAnimal.width/2; 
         } else {
             newAnimal = this.animals.previous(); 
             newAnimal.x = 640 + newAnimal.width/2 ; 
